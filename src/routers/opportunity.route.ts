@@ -23,6 +23,7 @@ opportunityRouter.get('/', (req, res) => {
 opportunityRouter.get('/:id', ValidateId.opportunity, AuthToken.execute, AuthOwner.execute, (req, res) => {
    oportunityController.findOne(req, res);
 });
+
 opportunityRouter.post('/', validateBody.execute(opportunityCreateSchema), AuthToken.execute, (req, res) => {
    oportunityController.create(req, res);
 });

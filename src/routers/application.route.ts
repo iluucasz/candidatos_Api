@@ -6,19 +6,20 @@ import { ValidateId } from '../middlewares/validateId.middleware';
 import { container } from 'tsyringe';
 import { ApplicationService } from '../services/application.service';
 import { AuthToken } from '../middlewares/authToken.middleware';
+import { AuthOwner } from '../middlewares/AuthOwner.middleware';
 
 container.registerSingleton('ApplicationService', ApplicationService);
 const applicationController = container.resolve(ApplicationController);
 
 export const applicationRouter = Router();
 
-applicationRouter.get('/:id/applications', ValidateId.application, AuthToken.execute, (req, res) => {
+applicationRouter.get('/:id/applications', AuthToken.execute, AuthOwner.execute, (req, res) => {
    applicationController.findMany(req, res);
 });
 
 applicationRouter.post(
    '/:id/applications',
-   ValidateId.application,
+   ValidateId.opportunity,
    validateBody.execute(applicationSchemaCreate),
    (req, res) => {
       applicationController.create(req, res);

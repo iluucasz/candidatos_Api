@@ -36,6 +36,6 @@ export class OpportunityController {
    delete = async (request: Request, response: Response) => {
       const params = Number(request.params.id);
       const del = await this.opportunityService.delete(params);
-      return response.status(200).json({ message: del });
+      return response.status(204).json({ message: del });
    };
 }

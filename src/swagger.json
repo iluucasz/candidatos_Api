@@ -1,0 +1,548 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Candidatos Api",
+    "description": "Api de candidatura de vagas, o usuário pode aplicar para vagas ou criar uma oportunidade de vagas para que outros usuários possam aplicar, esta api tem como referência o linkedin.",
+    "contact": {
+      "name": "contato",
+      "url": "http://dev-lcs.com/",
+      "email": "lucasface99@gmail.coom"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": [
+          "Rota de Usuários"
+        ],
+        "summary": "Registro de usuário",
+        "requestBody": {
+          "description": "Padrão do Corpo",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseRegisterUser"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "E-mail already registered"
+          },
+          "422": {
+            "description": "Invalid Body"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Rota de Usuários"
+        ],
+        "summary": "Logar usuário",
+        "requestBody": {
+          "description": "Padrão do Corpo",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseLoginUser"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email/Password invalid"
+          },
+          "404": {
+            "description": "User Not Registered"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Rota de Usuários"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Obter usuários | Necessário Autenticação",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseRegisterUser"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token Required"
+          }
+        }
+      }
+    },
+    "/opportunities": {
+      "post": {
+        "tags": [
+          "Rota de Oportunidades"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Criar oportunidade | Necessário Autenticação",
+        "requestBody": {
+          "description": "Padrão do Corpo",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpportunityCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token Required"
+          },
+          "422": {
+            "description": "Invalid Body"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Rota de Oportunidades"
+        ],
+        "summary": "Obter todas as oportunidades",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opportunities/user": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Rota de Oportunidades"
+        ],
+        "summary": "Obter oportunidade do usuário | Necessário autenticação",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opportunities/{id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da oportunidade",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Rota de Oportunidades"
+        ],
+        "summary": "Obter oportunidade por ID | Necessário autenticação",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Opportunity not found"
+          },
+          "403": {
+            "description": "Token Required"
+          },
+          "401": {
+            "description": "You are not allowed"
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da oportunidade",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Rota de Oportunidades"
+        ],
+        "summary": "Atualizar um usuário | Necessário autenticação",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpportunityCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You are not allowed"
+          },
+          "404": {
+            "description": "Opportunity not found"
+          },
+          "403": {
+            "description": "Token Required"
+          },
+          "422": {
+            "description": "Invalid Body"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da oportunidade",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Rota de Oportunidades"
+        ],
+        "summary": "Deletar usuário | Necessário autenticação",
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "You are not allowed"
+          },
+          "404": {
+            "description": "Opportunity not found"
+          },
+          "403": {
+            "description": "Token Required"
+          }
+        }
+      }
+    },
+    "/opportunities/{id}/applications": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da oportunidade",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Rota de Aplicação"
+        ],
+        "summary": "Aplicar para uma oportunidade | Necessário autenticação",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Opportunity not found"
+          },
+          "422": {
+            "description": "Invalid Body"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da oportunidade",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Rota de Aplicação"
+        ],
+        "summary": "Obter lista de oportunidade aplicadas | Necessário autenticação",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResponse"
+                }
+              }
+            },
+            "401": {
+              "description": "You are not allowed"
+            },
+            "403": {
+              "description": "Token Required"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegisterUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Joe Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "johndoe@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          }
+        }
+      },
+      "ResponseRegisterUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Joe Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "johndoe@mail.com"
+          }
+        }
+      },
+      "LoginUser": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "johndoe@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          }
+        }
+      },
+      "ResponseLoginUser": {
+        "type": "object",
+        "properties": {
+          "AcessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzA4NTQ2MDQzfQ.pDcRf1yu1XmVaIrRLOBoa6O_8Ukl1lxX-6lkxwcJRtI"
+          },
+          "user": {
+            "type": "object",
+            "example": {
+              "id": 1,
+              "name": "Joe Doe",
+              "email": "johndoe@mail.com"
+            }
+          }
+        }
+      },
+      "OpportunityCreate": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Lorem ipsum"
+          },
+          "description": {
+            "type": "string",
+            "description": "Lorem ipsum"
+          }
+        }
+      },
+      "OpportunityResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "array",
+            "example": [
+              {
+                "id": 1,
+                "title": "Lorem ipsum",
+                "description": "Lorem ipsum",
+                "userId": 1
+              }
+            ]
+          }
+        }
+      },
+      "ApplicationCreate": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "array",
+            "example": [
+              {
+                "name": "john doe",
+                "email": "john_doe@email.com",
+                "linkedin": "https://example.com"
+              }
+            ]
+          }
+        }
+      },
+      "ApplicationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "array",
+            "example": [
+              {
+                "id": 1,
+                "name": "john doe",
+                "email": "john_doe@mail.com",
+                "linkedin": "https://example.com",
+                "opportunityId": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "description": "Autenticação JWT",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

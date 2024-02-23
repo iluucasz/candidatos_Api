@@ -12,7 +12,7 @@ export class ApplicationService {
       return create;
    };
 
-   findMany = async (id: number): Promise<TApplication[]> => {
+   findMany = async (id: number): Promise<TApplication[] | null> => {
       const find = await prisma.application.findMany({
          where: {
             id

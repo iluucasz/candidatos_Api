@@ -8,7 +8,7 @@ export class ValidateId {
 
       const opportunity = await prisma.opportunity.findUnique({ where: { id } });
 
-      if (!opportunity) {
+      if (!opportunity || !id) {
          throw new AppError(404, 'Opportunity not found');
       }
 
