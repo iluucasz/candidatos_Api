@@ -27,14 +27,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "node dist/server.js",
     "build": "npx tsc",
+    "migrate:prod": "npx prisma migrate dev",
     "dev": "dotenv -e .env.develop -- tsnd --respawn ./src/server.ts",
     "migrate:dev": "dotenv -e .env.develop -- npx prisma migrate dev",
-    "migrate:deploy": "npx prisma migrate deploy",
     "studio:dev": "dotenv -e .env.develop -- npx prisma studio"
   },
-  "author": "",
+  "author": "Lucas Santos",
   "license": "ISC",
-  "description": ""
+  "description": "Api de candidatura de vagas, o usuário pode aplicar para vagas ou criar uma oportunidade de vagas para que outros usuários possam aplicar, esta api tem como referência o linkedin."
 }

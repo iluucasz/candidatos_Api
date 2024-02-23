@@ -37,6 +37,11 @@ npm run migrate:dev
 npm run dev
 ```
 
+### visualizar o banco de dados:
+```
+npm run studio:dev
+```
+
 # Documentação Completa e Testes de Rotas:
 
 ### Rota da documentação: GET /docs
